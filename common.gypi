@@ -508,7 +508,7 @@
         'cflags': [ '-pthread' ],
         'ldflags': [ '-pthread' ],
       }],
-      [ 'OS in "linux freebsd openbsd solaris android aix os400 cloudabi openharmony"', {
+      [ 'OS in "linux freebsd openbsd solaris android aix os400 cloudabi openharmony qnx"', {
         'cflags': [ '-Wall', '-Wextra', '-Wno-unused-parameter', ],
         'cflags_cc': [
           '-fno-rtti',
@@ -638,6 +638,21 @@
             'ldflags': [ '-pthread' ],
           }],
         ],
+      }],
+      ['OS=="qnx"', {
+	'ldflags!': [ '-rdynamic' ],
+	'target_conditions': [
+	  ['_toolset=="target"', {
+            'defines': [
+	      'madvise=posix_madvise',
+	      'MADV_DONTNEED=POSIX_MADV_DONTNEED',
+	    ],
+	    'libraries': [
+		'-lsocket',
+		'-lm',
+	    ],
+	  }],
+	],
       }],
       ['OS=="mac"', {
         'defines': ['_DARWIN_USE_64_BIT_INODE=1'],

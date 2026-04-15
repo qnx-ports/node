@@ -5,7 +5,7 @@
 // Platform-specific code for QNX goes here. For the POSIX-compatible
 // parts the implementation is in platform-posix.cc.
 
-#include <backtrace.h>
+//#include <backtrace.h>
 #include <pthread.h>
 #include <semaphore.h>
 #include <signal.h>

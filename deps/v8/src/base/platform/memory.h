@@ -27,7 +27,10 @@
 #include <malloc.h>
 #endif
 
-#if (V8_OS_POSIX && !V8_OS_AIX && !V8_OS_SOLARIS && !V8_OS_ZOS && !V8_OS_OPENBSD) || V8_OS_WIN
+// QNX 8.0.X has a bug in malloc_usable_size for values that are greated than mmap threashold
+// it will be off by 8 bytes causing the internals of malloc to be overwritten disabling for now
+// it will waste a little bit of memory but its just the difference from the request to the next PAGE_SIZE
+#if (V8_OS_POSIX && !V8_OS_AIX && !V8_OS_SOLARIS && !V8_OS_ZOS && !V8_OS_OPENBSD && !V8_OS_QNX) || V8_OS_WIN
 #define V8_HAS_MALLOC_USABLE_SIZE 1
 #endif
 

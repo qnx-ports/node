@@ -72,7 +72,7 @@
 #include <sys/resource.h>
 #endif
 
-#if !defined(_AIX) && !defined(V8_OS_FUCHSIA) && !V8_OS_ZOS
+#if !defined(_AIX) && !defined(V8_OS_FUCHSIA) && !V8_OS_ZOS && !defined(V8_OS_QNX)
 #include <sys/syscall.h>
 #endif
 
@@ -867,7 +867,7 @@ int OS::GetCurrentThreadIdInternal() {
   return static_cast<int>(thread_self());
 #elif V8_OS_FUCHSIA
   return static_cast<int>(zx_thread_self());
-#elif V8_OS_SOLARIS
+#elif V8_OS_SOLARIS || V8_OS_QNX
   return static_cast<int>(pthread_self());
 #elif V8_OS_ZOS
   return gettid();
@@ -1387,6 +1387,10 @@ Stack::StackSlot Stack::ObtainCurrentThreadStackStart() {
     return nullptr;
   }
   void* stack_start = reinterpret_cast<uint8_t*>(stack.ss_sp) + stack.ss_size;
+  return stack_start;
+#elif V8_OS_QNX
+  struct _thread_local_storage* tls = __tls();
+  void* stack_start = reinterpret_cast<std::uint8_t*>(tls->__stackaddr) + tls->__stacksize;
   return stack_start;
 #else
   pthread_attr_t attr;

@@ -1579,11 +1579,11 @@
                   '-lrt'
                 ],
               }],
-              ['_toolset=="target"', {
-                'libraries': [
-                  '-lbacktrace'
-                ],
-              }],
+              #['_toolset=="target"', {
+              #  'libraries': [
+              #    '-lbacktrace'
+              #  ],
+              #}],
             ],
           },
           'sources': [
